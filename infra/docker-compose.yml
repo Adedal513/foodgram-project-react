@@ -1,6 +1,6 @@
 version: '3.3'
-services:
 
+services:
   frontend:
     container_name: frontend
     build:
@@ -24,6 +24,7 @@ services:
       - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
+      - ../init_db/init_db.sql:/docker-entrypoint-initdb.d/init_db.sql
     healthcheck:
       test: /usr/bin/pg_isready
       interval: 5s
@@ -31,6 +32,25 @@ services:
       retries: 120
     env_file:
       ./.env
+  app:
+    container_name: app
+    build:
+      context: ../backend
+      dockerfile: Dockerfile
+    expose:
+      - "8000:8000"
+    command: bash -c "python manage.py migrate && python manage.py collectstatic --noinput && gunicorn -c foodgram/gunicorn.py"
+    volumes:
+      - static_volume:/opt/app/static
+      - media_volume:/opt/app/media
+      - ./gunicorn_log:/var/log/gunicorn
+    env_file:
+      - ./.env
+    depends_on:
+      psql:
+        condition: service_healthy
 
 volumes:
+  static_volume:
+  media_volume:
   postgres_data:
