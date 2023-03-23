@@ -1,24 +1,7 @@
 from django.db import models
-from django.contrib.auth.models import AbstractUser
+from django.contrib.auth import get_user_model
 
-USER_REQUIRED_FIELDS = [
-    'username',
-    'first_name',
-    'last_name',
-]
-
-
-class User(AbstractUser):
-    email = models.EmailField(
-        'email',
-        max_length=256,
-        unique=True
-    )
-
-    class Meta:
-        ordering = ['id']
-        verbose_name = 'Пользователь'
-        verbose_name_plural = 'Пользователи'
+User = get_user_model()
 
 
 class Subscribe(models.Model):
@@ -36,7 +19,7 @@ class Subscribe(models.Model):
     )
 
     class Meta:
-        ordering = ['id'],
+        ordering = ['id', ]
         constraints = [
             models.UniqueConstraint(
                 fields=['user', 'author'],

@@ -1,4 +1,4 @@
-from django.contrib.auth import get_user_model
+"""from django.contrib.auth import get_user_model
 from django.db import transaction
 from django.contrib.auth.models import AbstractUser
 from django.db.models import F
@@ -97,8 +97,6 @@ class RecipeReadSerializer(ModelSerializer):
 
         return ShoppingCart.objects.filter(user=user, recipe=obj).exists()
 
-class RecipeWriteSerializer(ModelSerializer):
-
 
 class IngredientRecipeWriteSerializer(ModelSerializer):
     id = IntegerField(write_only=True)
@@ -106,3 +104,67 @@ class IngredientRecipeWriteSerializer(ModelSerializer):
     class Meta:
         model = Ingredient
         fields = ('id', 'amount')
+
+
+class RecipeWriteSerializer(ModelSerializer):
+    tags = PrimaryKeyRelatedField(
+        queryset=Tag.objects.all(),
+        many=True
+    )
+    author = CustomUserSerializer(read_only=True)
+    ingredients = IngredientRecipeWriteSerializer(many=True)
+    image = Base64ImageField()
+
+    class Meta:
+        model = Recipe
+        fields = (
+            'id',
+            'tags',
+            'author',
+            'ingredients',
+            'name',
+            'image',
+            'text',
+            'cooking_time'
+        )
+
+    def validate_ingredients(self, value):
+        if not value:
+            raise ValidationError({
+                'ingredients': 'Рецепт содержит минимум 1 ингредиент.'
+            })
+
+        ingredient_list = []
+
+        for item in value:
+            ingredient = get_object_or_404(Ingredient, id=item['id'])
+
+            if ingredient in ingredient_list:
+                raise ValidationError({
+                    'ingredients': 'Ингредиенты не должны повторяться.'
+                })
+
+            if int(item('amount')) <= 0:
+                raise ValidationError({
+                    'ingredients': 'Количество ингредиента >= 0.'
+                })
+
+            ingredient_list.append(ingredient)
+
+        return value
+
+    def validate_tags(self, value):
+        if not value:
+            raise ValidationError({
+                'tags': 'Рецепту требуется минимум 1 тег.'
+            })
+
+        tags_list = []
+        for tag in value:
+            if tag in tags_list:
+                raise ValidationError({
+                    'tags': 'Теги должны быть уникальными!'
+                })
+            tags_list.append(tag)
+        return value
+"""

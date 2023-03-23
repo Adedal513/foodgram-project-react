@@ -21,8 +21,8 @@ class Ingredient(models.Model):
 
     class Meta:
         db_table = 'content\".\"ingridient'
-        verbose_name = 'Ингридиент'
-        verbose_name_plural = 'Ингридиенты'
+        verbose_name = 'Ингрeдиент'
+        verbose_name_plural = 'Ингрeдиенты'
 
         ordering = ['name']
 
@@ -86,7 +86,7 @@ class Recipe(models.Model):
     )
     ingredients = models.ManyToManyField(
         Ingredient,
-        through='RecipeIngredients',
+        through='RecipeIngredient',
         related_name='recipes',
         verbose_name='Ингридиенты'
     )
@@ -112,7 +112,7 @@ class Recipe(models.Model):
         return self.name
 
 
-class RecipeIngredients(models.Model):
+class RecipeIngredient(models.Model):
     """Модель представления MtM-связи Ингридиента и Рецепта."""
 
     recipe = models.ForeignKey(
