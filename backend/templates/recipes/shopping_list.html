@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Список покупок</title>
+		<meta charset="utf-8">
+		<style>
+            body {
+                height: 842px;
+                width: 595px;
+                margin-left: auto;
+                margin-right: auto;
+                font-family:Verdana, Geneva, Tahoma, sans-serif
+            }
+			.header {
+				border-bottom: 1px solid #ccc;
+				padding: .5em 1em;
+				display: flex;
+				justify-content: center;
+			}
+            li {
+                border-radius: 3px;
+                padding: 25px 30px;
+                display: flex;
+                justify-content: space-between;
+                margin-bottom: 25px;
+            }
+            .table-header {
+                background-color: #95A5A6;
+                font-size: 14px;
+                text-transform: uppercase;
+                letter-spacing: 0.03em;
+            }
+            .table-row {
+                background-color: #ffffff;
+                box-shadow: 0px 0px 9px 0px rgba(0,0,0,0.1);
+            }
+		</style>
+	</head>
+	<body>
+		<div class="header">
+			СПИСОК ПОКУПОК
+		</div>
+        <ul class="table">
+            <li class="table-header">
+                <div>Ингредиент</div>
+                <div>Кол-во</div>
+                <div>Единица измерения</div>
+            </li>
+            {% for name, amount, measurement_unit  in ingredients %}
+                <li class="table-row">
+                    <div>{{name}}</div>
+                    <div>{{amount}}</div>
+                    <div>{{measurement_unit}}</div>
+                </li>
+            {% endfor %}
+        </ul>
+	</body>
+</html>

@@ -1,10 +1,39 @@
+from django.contrib.auth.models import AbstractUser
 from django.db import models
-from django.contrib.auth import get_user_model
-
-User = get_user_model()
 
 
-class Subscribe(models.Model):
+class User(AbstractUser):
+    ADMIN = 'admin'
+    MODERATOR = 'moderator'
+    USER = 'user'
+
+    ROLE_CHOICES = (
+        (ADMIN, 'admin'),
+        (MODERATOR, 'moderator'),
+        (USER, 'user'),
+    )
+
+    role = models.CharField(
+        choices=ROLE_CHOICES,
+        default=USER,
+        max_length=10,
+        verbose_name='Роль',
+    )
+
+    class Meta:
+        verbose_name = 'Пользователь'
+        verbose_name_plural = 'Пользователи'
+
+    @property
+    def is_moderator(self):
+        return self.role == self.MODERATOR
+
+    @property
+    def is_admin(self):
+        return self.role == self.ADMIN
+
+
+class Subscription(models.Model):
     user = models.ForeignKey(
         User,
         related_name='subscriber',
@@ -13,7 +42,7 @@ class Subscribe(models.Model):
     )
     author = models.ForeignKey(
         User,
-        related_name='subscribing_to',
+        related_name='subscribed_to',
         verbose_name='Автор',
         on_delete=models.CASCADE
     )

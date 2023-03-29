@@ -1,8 +1,8 @@
 from django.contrib import admin
-from users.models import Subscribe
+from users.models import Subscription
 
 
-@admin.register(Subscribe)
+@admin.register(Subscription)
 class SubscribeAdmin(admin.ModelAdmin):
     list_display = ('user', 'author',)
     search_fields = ('user', 'author')

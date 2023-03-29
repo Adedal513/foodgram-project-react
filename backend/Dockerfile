@@ -10,7 +10,8 @@ ENV DJANGO_SETTINGS_MODULE 'foodgram.settings'
 RUN apt-get update && apt-get install -y netcat
 COPY requirements.txt requirements.txt
 
-RUN mkdir -p /var/www/static/ \
+RUN apt -y install python3-pip python3-cffi python3-brotli libpango-1.0-0 libpangoft2-1.0-0 \
+    && mkdir -p /var/www/static/ \
     && mkdir -p /var/www/media/ \
     && mkdir /var/log/gunicorn \
     && pip install --upgrade pip \

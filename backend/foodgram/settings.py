@@ -1,10 +1,8 @@
 import os
-
 from pathlib import Path
 
 from dotenv import load_dotenv
 from split_settings.tools import include
-
 
 load_dotenv()
 
@@ -46,6 +44,20 @@ include(
 # Static files (CSS, JavaScript, Images)
 include(
     'components/static.py'
+)
+# Media files
+include(
+    'components/media.py'
+)
+
+# REST Framework
+include(
+    'components/rest_framework.py'
+)
+
+# Djoser
+include(
+    'components/djoser.py'
 )
 
 # Default primary key field type

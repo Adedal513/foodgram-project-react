@@ -1,13 +1,8 @@
 from django.contrib import admin
+from recipes.models import (Favourite, Ingredient, Recipe, RecipeIngredient,
+                            ShoppingCart, Tag)
 
-from recipes.models import (
-    Tag,
-    Ingredient,
-    Recipe,
-    RecipeIngredient,
-    ShoppingCart,
-    Favourite
-)
+from .forms import TagAdminForm
 
 
 class IngredientRecipeInline(admin.TabularInline):
@@ -15,21 +10,18 @@ class IngredientRecipeInline(admin.TabularInline):
     autocomplete_fields = ('ingredient',)
 
 
-class TagRecipeInline(admin.TabularInline):
-    model = Recipe.tags.through
-
-
 @admin.register(Recipe)
 class RecipeAdmin(admin.ModelAdmin):
     list_display = ('id', 'name', 'text', 'image', 'cooking_time')
     search_fields = ('name', 'text')
-    inlines = (IngredientRecipeInline, TagRecipeInline)
+    inlines = (IngredientRecipeInline, )
 
 
 @admin.register(Tag)
 class TagAdmin(admin.ModelAdmin):
     list_display = ('name', 'color', 'slug')
     search_fields = ('name', 'slug')
+    form = TagAdminForm
 
 
 @admin.register(Ingredient)
