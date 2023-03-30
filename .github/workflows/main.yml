@@ -69,9 +69,9 @@ jobs:
             sudo docker pull ${{ secrets.DOCKER_USERNAME }}/foodgram-backend:latest
             sudo docker pull ${{ secrets.DOCKER_USERNAME }}/foodgram-frontend:latest
             # sudo docker-compose down -v
+            cd infra
             sudo docker-compose stop
             sudo docker-compose rm app
-            cd infra
             rm .env
             touch .env
             echo DEBUG=${{ secrets.DEBUG }}
