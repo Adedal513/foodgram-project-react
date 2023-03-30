@@ -4,9 +4,7 @@ name: foodgram
 services:
   frontend:
     container_name: foodgram_frontend
-    build:
-      context: ../frontend
-      dockerfile: Dockerfile
+    image: adedal/foodgram-frontend:latest
     volumes:
       - ../frontend/:/app/result_build/
     depends_on:
@@ -45,9 +43,7 @@ services:
       ./.env
   app:
     container_name: foodgram_app
-    build:
-      context: ../backend
-      dockerfile: Dockerfile
+    image: adedal/foodgram-backend:latest
     expose:
       - "8000:8000"
     command: bash startup.sh
