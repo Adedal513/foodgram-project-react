@@ -76,8 +76,8 @@ jobs:
             sudo docker-compose rm app
             rm .env
             touch .env
-            echo DEBUG=${{ secrets.DEBUG }}
-            echo INTERNAL_IPS=${{ secrets.INTERNAL_IPS }}
+            echo DEBUG=${{ secrets.DEBUG }} >> .env
+            echo INTERNAL_IPS=${{ secrets.INTERNAL_IPS }} >> .env
             echo SECRET_KEY=${{ secrets.SECRET_KEY }} >> .env
             echo ALLOWED_HOSTS=${{ secrets.ALLOWED_HOSTS }} >> .env
             echo DB_ENGINE=${{ secrets.DB_ENGINE }} >> .env
@@ -87,6 +87,6 @@ jobs:
             echo POSTGRES_HOST=${{ secrets.POSTGRES_HOST }} >> .env
             echo POSTGRES_PORT=${{ secrets.POSTGRES_PORT }} >> .env
             sudo docker-compose up -d
-            sudo docker-compose exec app -T python manage.py load_db
+            # sudo docker-compose exec app python manage.py load_db
             # sudo docker system prune -af
             # sudo docker volume prune -f
