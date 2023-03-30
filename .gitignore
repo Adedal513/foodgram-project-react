@@ -133,3 +133,6 @@ dmypy.json
 
 # media
 media
+
+# Gunicorn Logs
+gunicorn_log
