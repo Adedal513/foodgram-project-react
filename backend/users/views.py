@@ -11,6 +11,7 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
 
 from .models import Subscription
+from .pagination import LimitPageNumberPagination
 from .serializers import SubscriptionSerializer
 
 User = get_user_model()
@@ -19,7 +20,7 @@ User = get_user_model()
 @api_view(['POST', 'DELETE'])
 @permission_classes((permissions.IsAuthenticated,))
 def subscribe(request, pk):
-    user = request.user
+    user = get_object_or_404(User, id=request.user.id)
     author = get_object_or_404(User, id=pk)
 
     if request.method == 'POST':
@@ -65,6 +66,7 @@ class SubscriptionListViewSet(viewsets.ModelViewSet):
     filters = (filters.SearchFilter,)
     permission_classes = (permissions.IsAuthenticated,)
     search_fields = ('^following__user')
+    pagination_class = LimitPageNumberPagination
 
     def get_queryset(self):
         user = self.request.user

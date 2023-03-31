@@ -57,6 +57,7 @@ jobs:
           no-cache: true
           tags: ${{ secrets.DOCKER_USERNAME }}/foodgram-frontend:latest
   deploy:
+    name: Deploy service to Yandex Cloud VM
     runs-on: ubuntu-latest
     needs: build_and_push_to_docker_hub
 
