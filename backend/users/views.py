@@ -1,6 +1,5 @@
 from http import HTTPStatus
 
-from django.contrib.auth import get_user_model
 from django.core.exceptions import ObjectDoesNotExist
 from django.db import IntegrityError
 from django.shortcuts import get_object_or_404
@@ -10,11 +9,9 @@ from rest_framework import filters, permissions, viewsets
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
 
-from .models import Subscription
+from .models import Subscription, User
 from .pagination import LimitPageNumberPagination
 from .serializers import SubscriptionSerializer
-
-User = get_user_model()
 
 
 @api_view(['POST', 'DELETE'])

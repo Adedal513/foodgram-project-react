@@ -147,17 +147,17 @@ class RecipeCreateSerializer(serializers.ModelSerializer):
     def validate_ingredients(self, ingredients):
         if not ingredients:
             raise ValidationError(
-                'Необходимо выбрать ингредиенты!'
+                'Необходимо выбрать ингредиенты.'
             )
         for ingredient in ingredients:
             if int(ingredient['amount']) <= 0:
                 raise ValidationError(
-                    'Количество ингредиентов должно быть больше нуля!'
+                    'Объем ингредиента должен быть >= 0.'
                 )
         ids = [item['id'] for item in ingredients]
         if len(ids) != len(set(ids)):
             raise ValidationError(
-                'Ингредиенты в рецепте должны быть уникальными!'
+                'Ингредиенты в рецепте должны быть уникальными.'
             )
         return ingredients
 
@@ -171,9 +171,11 @@ class RecipeCreateSerializer(serializers.ModelSerializer):
         for ingredient in ingredients:
             ingredient_id = ingredient['id']
             amount = ingredient['amount']
+
             if RecipeIngredient.objects.filter(
                     recipe=recipe, ingredient=ingredient_id).exists():
                 amount += F('amount')
+
             RecipeIngredient.objects.update_or_create(
                 recipe=recipe, ingredient=ingredient_id,
                 defaults={'amount': amount}
@@ -181,20 +183,31 @@ class RecipeCreateSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         author = self.context.get('request').user
+
         tags_data = validated_data.pop('tags')
         ingredients_data = validated_data.pop('ingredients')
         image = validated_data.pop('image')
-        recipe = Recipe.objects.create(image=image, author=author,
-                                       **validated_data)
+
+        recipe = Recipe.objects.create(
+            image=image,
+            author=author,
+            **validated_data
+        )
+
         self._create_ingredients(ingredients_data, recipe)
+
         recipe.tags.set(tags_data)
+
         return recipe
 
     def update(self, instance, validated_data):
         ingredients = validated_data.pop('ingredients')
         tags = validated_data.pop('tags')
+
         RecipeIngredient.objects.filter(recipe=instance).delete()
+
         self.add_ingredients(ingredients, instance)
+
         instance.tags.set(tags)
 
         return super().update(instance, validated_data)
