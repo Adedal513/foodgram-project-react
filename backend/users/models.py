@@ -23,6 +23,12 @@ class User(AbstractUser):
     class Meta:
         verbose_name = 'Пользователь'
         verbose_name_plural = 'Пользователи'
+        indexes = [
+            models.Index(
+                fields=['email'],
+                name='user_email_idx'
+                )
+        ]
 
     @property
     def is_moderator(self):
