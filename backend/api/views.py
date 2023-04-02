@@ -1,28 +1,27 @@
 from http import HTTPStatus
 
-from django.shortcuts import get_object_or_404
 from django.db import models
+from django.shortcuts import get_object_or_404
 from django.template.loader import render_to_string
 from django_filters.rest_framework import DjangoFilterBackend
+from djoser import utils
 from djoser.views import TokenDestroyView
 from recipes.models import Ingredient, Recipe, Tag
-from djoser import utils
-from users.models import User, Subscription
-from rest_framework.decorators import action
+from rest_framework.decorators import action, api_view, permission_classes
+from rest_framework.filters import SearchFilter
 from rest_framework.permissions import SAFE_METHODS, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet, ReadOnlyModelViewSet
-from rest_framework.filters import SearchFilter
+from users.models import Subscription, User
 
 from .filters import IngredientFilter, RecipeFilter
 from .pagination import LimitPageNumberPagination
 from .permissions import IsAdminOrReadOnly, IsAuthorOrReadOnly
 from .serializers import (ExtendedRecipeSerializer, IngredientSerializer,
                           RecipeCreateSerializer, RecipeSerializer,
-                          TagSerializer, SubscribeSerializer)
-from .serializers import SubscriptionSerializer
+                          SubscribeSerializer, SubscriptionSerializer,
+                          TagSerializer)
 from .utils import get_shopping_list, render_pdf_response
-from rest_framework.decorators import api_view, permission_classes
 
 
 class IngredientViewSet(ReadOnlyModelViewSet):

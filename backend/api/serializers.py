@@ -1,12 +1,12 @@
 from django.contrib.auth.models import AbstractBaseUser
 from django.db.models import F
 from django.forms import ValidationError
+from djoser.serializers import UserCreateSerializer, UserSerializer
 from drf_extra_fields.fields import Base64ImageField
 from recipes.models import (Favourite, Ingredient, Recipe, RecipeIngredient,
                             ShoppingCart, Tag)
 from rest_framework import serializers
 from users.models import Subscription, User
-from djoser.serializers import UserCreateSerializer, UserSerializer
 
 
 class TagSerializer(serializers.ModelSerializer):
