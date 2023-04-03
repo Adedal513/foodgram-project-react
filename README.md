@@ -42,7 +42,7 @@ http://localhost:8000
 
 Документация:
 
-http://localhost:8000/api/docs
+http://localhost:8000/api/docs/
 
 ### Запуск на удаленном сервере
 ---
@@ -78,3 +78,11 @@ docker-compose exec app python manage.py load_db
 # Ссылки
 
 Пример развернутого проекта: http://84.252.139.46
+Документация: http://84.252.139.46/api/docs/
+Админка: http://84.252.139.46/admin
+
+Реквизиты администратора:
+
+**login**: admin
+
+**password**: admin
