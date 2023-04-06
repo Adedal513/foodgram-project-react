@@ -30,8 +30,7 @@ class Command(BaseCommand):
     def handle(self, *args: Any, **options: Any) -> str | None:
 
         for path, model in MODELS_SOURCE:
-            if isinstance(model, User) and options['dummy_user']:
-                self._populate_model(path, model)
+            self._populate_model(path, model)
 
         if options['dummy_user']:
             path, model = USER_SOURCE
