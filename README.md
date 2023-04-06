@@ -36,6 +36,8 @@ docker-compose up -d
 ```
 docker-compose exec app python manage.py load_db
 ```
+При использовании флага `-u` будет создан тестовый пользователь.
+
 Cервис станет доступен по адресу:
 
 http://localhost:8000
@@ -86,3 +88,8 @@ docker-compose exec app python manage.py load_db
 **login**: admin
 
 **password**: admin
+
+Реквизиты тестового пользователя:
+
+**Почта**: ivan@mail.com
+**Пароль**: 123qwe
