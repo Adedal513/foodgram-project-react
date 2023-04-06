@@ -13,13 +13,7 @@ MODELS_SOURCE = [
     ('recipes/data/tags.csv', Tag)
 ]
 
-DUMMY_USER_DATA = {
-    'username': 'Ivan123',
-    'first_name': 'Иван',
-    'last_name': 'Иванов',
-    'password': '123qwe',
-    'email': 'ivan@mail.com'
-}
+USER_SOURCE = ('recipes/data/users.csv', User)
 
 
 class Command(BaseCommand):
@@ -36,18 +30,27 @@ class Command(BaseCommand):
     def handle(self, *args: Any, **options: Any) -> str | None:
 
         for path, model in MODELS_SOURCE:
-            self._populate_model(path, model)
+            if isinstance(model, User) and options['dummy_user']:
+                self._populate_model(path, model)
 
         if options['dummy_user']:
-            User.objects.create_user(**DUMMY_USER_DATA)
+            path, model = USER_SOURCE
+            self._populate_model(path, model, True)
+
         self.stdout.write(self.style.SUCCESS('DB successfully populated'))
 
-    def _populate_model(self, source: str, model: models.Model):
+    def _populate_model(self,
+                        source: str,
+                        model: models.Model,
+                        user_mode: bool | None = False):
         with open(source, encoding='utf-8') as file:
             reader = csv.DictReader(file)
             for row in reader:
                 try:
-                    model.objects.create(**row)
+                    if user_mode:
+                        model.objects.create_user(**row)
+                    else:
+                        model.objects.create(**row)
                 except Exception as e:
                     raise CommandError(
                         f'Error while populating model {model}: {e}'

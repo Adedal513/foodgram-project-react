@@ -85,11 +85,12 @@ docker-compose exec app python manage.py load_db
 
 Реквизиты администратора:
 
-**login**: admin
+**login**: admin **password**: admin
 
-**password**: admin
-
-Реквизиты тестового пользователя:
+Реквизиты тестовых пользователей:
 
 **Почта**: ivan@mail.com
 **Пароль**: 123qwe
+
+**Почта**: petr@mail.com
+**Пароль**: qwe123
