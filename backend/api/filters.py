@@ -1,5 +1,5 @@
 from django_filters import rest_framework as filters
-from recipes.models import Ingredient, Recipe
+from recipes.models import Ingredient, Recipe, Tag
 
 
 class IngredientFilter(filters.FilterSet):
@@ -20,10 +20,12 @@ class RecipeFilter(filters.FilterSet):
         method='get_favorite',
         label='favorite',
     )
-    tags = filters.AllValuesMultipleFilter(
+    tags = filters.ModelMultipleChoiceFilter(
+        queryset=Tag.objects.all(),
         field_name='tags__slug',
-        label='tags',
-    )
+        to_field_name='slug',
+        )
+
     is_in_shopping_cart = filters.BooleanFilter(
         method='get_is_in_shopping_cart',
         label='shopping_cart',
